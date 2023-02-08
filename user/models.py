@@ -25,9 +25,9 @@ class UserModel(Base):
     username = Column(String, index=True, nullable=False)
     withdraw = Column(Boolean, default=False, index=True, nullable=False)
     
-    avatar = relationship("AvatarModel", back_populates="owner")
+    avatar = relationship("AvatarModel", foreign_keys="AvatarModel.owner_pk", back_populates="owner")
     logged_in = relationship("LoggedInModel", back_populates="owner")
-    oauth = relationship("OauthIdModel", back_populates="owner")
+    oauth = relationship("OauthModel", back_populates="owner")
     managed_user = relationship("ManagedUserModel", back_populates="owner")
     user_role = relationship("UserRoleModel", back_populates="owner")
     confirm_email = relationship("ConfirmEmailModel", back_populates="owner")
@@ -40,7 +40,7 @@ class LoggedInModel(Base):
     date_created = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
     remote_addr = Column(String, index=True, nullable=True)
 
-    owner = relationship("UserModel", back_populates="logged_in")
+    owner = relationship("UserModel", foreign_keys=[owner_pk], back_populates="logged_in")
     
 class OauthModel(Base):
     __tablename__ = "oauth"
@@ -50,7 +50,7 @@ class OauthModel(Base):
     access_token = Column(String, index=True, nullable=False)
     provider = Column(String, index=True, nullable=False)
 
-    owner = relationship("UserModel", back_populates="oauth")
+    owner = relationship("UserModel", foreign_keys=[owner_pk], back_populates="oauth")
     
 class ManagedUserModel(Base):
     __tablename__ = "managed_user"
@@ -58,7 +58,7 @@ class ManagedUserModel(Base):
     owner_pk = Column(Integer, ForeignKey("user.pk"), nullable=False)
     version = Column(String, index=True, nullable=False)
 
-    owner = relationship("UserModel", back_populates="managed_user")
+    owner = relationship("UserModel", foreign_keys=[owner_pk], back_populates="managed_user")
 
 class UserRoleModel(Base):
     __tablename__ = "user_role"
@@ -66,8 +66,8 @@ class UserRoleModel(Base):
     owner_pk = Column(Integer, ForeignKey("user.pk"), nullable=False)
     role_pk = Column(Integer, ForeignKey("role.pk"), nullable=False)
 
-    owner = relationship("UserModel", back_populates="user_role")
-    role = relationship("RoleModel", back_populates="user_role")
+    owner = relationship("UserModel", foreign_keys=[owner_pk], back_populates="user_role")
+    role = relationship("RoleModel", foreign_keys=[role_pk], back_populates="user_role")
 
 class RoleModel(Base):
     __tablename__ = "role"
@@ -75,7 +75,7 @@ class RoleModel(Base):
     version = Column(String, index=True, nullable=False)
     authority = Column(String, index=True, nullable=False)
 
-    user_role = relationship("UserRole", back_populates="role")
+    user_role = relationship("UserRoleModel", back_populates="role")
 
 class ConfirmEmailModel(Base):
     __tablename__ = "confirm_email"
@@ -86,4 +86,4 @@ class ConfirmEmailModel(Base):
     email = Column(String, index=True, nullable=False)
     secured_key = Column(String, index=True, nullable=False)
 
-    owner = relationship("UserModel", back_populates="confirm_email")
+    owner = relationship("UserModel", foreign_keys=[owner_pk], back_populates="confirm_email")

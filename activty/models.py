@@ -16,6 +16,6 @@ class ActivityModel(Base):
     point_type = Column(String, index=True, nullable=False)
     type = Column(String, index=True, nullable=False)
 
-    avatar = relationship("AvatarModel", back_populates="activity")
-    board = relationship("BoardModel", back_populates="activity")
-    content = relationship("ContentModel", back_populates="activity")
+    avatar = relationship("AvatarModel", foreign_keys=[avatar_pk], back_populates="activity")
+    board = relationship("BoardModel", foreign_keys=[board_pk], back_populates="activity")
+    content = relationship("ContentModel", foreign_keys=[content_pk], back_populates="activity")

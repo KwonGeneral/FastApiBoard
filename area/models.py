@@ -9,6 +9,8 @@ class AreaCityCodeModel(Base):
     version = Column(String, index=True, nullable=False)
     name = Column(String, index=True, nullable=False)
 
+    area_district_code = relationship("AreaDistrictCodeModel", back_populates="area_city_code")
+
 class AreaDistrictCodeModel(Base):
     __tablename__ = "area_district_code"
     pk = Column(Integer, primary_key=True, index=True)
@@ -16,4 +18,4 @@ class AreaDistrictCodeModel(Base):
     name = Column(String, index=True, nullable=False)
     area_city_code_pk = Column(Integer, ForeignKey("area_city_code.pk"), nullable=False)
 
-    area_city_code = relationship("AreaCityCodeModel", back_populates="area_district_code")
+    area_city_code = relationship("AreaCityCodeModel", foreign_keys=[area_city_code_pk], back_populates="area_district_code")

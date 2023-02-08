@@ -14,3 +14,5 @@ class FileModel(Base):
     org_name = Column(String, index=True, nullable=False)
     type = Column(String, index=True, nullable=False)
     width = Column(Integer, index=True, nullable=False)
+
+    content_file = relationship("ContentFileModel", back_populates="file")

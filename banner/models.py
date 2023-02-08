@@ -16,6 +16,8 @@ class BannerModel(Base):
     url = Column(String, index=True, nullable=False)
     visible = Column(Boolean, default=True, index=True, nullable=False)
 
+    banner_click = relationship("BannerClickModel", back_populates="banner")
+
 class BannerClickModel(Base):
     __tablename__ = "banner_click"
     pk = Column(Integer, primary_key=True, index=True)
@@ -25,4 +27,4 @@ class BannerClickModel(Base):
     date_created = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
     ip = Column(String, index=True, nullable=False)
 
-    banner = relationship("BannerModel", back_populates="banner_click")
+    banner = relationship("BannerModel", foreign_keys=[banner_pk], back_populates="banner_click")

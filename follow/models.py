@@ -10,5 +10,5 @@ class FollowModel(Base):
     following_pk = Column(Integer, ForeignKey("avatar.pk"), nullable=False)
     date_created = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
 
-    follower = relationship("AvatarModel", back_populates="follow")
-    following = relationship("AvatarModel", back_populates="follow")
+    avatar_follower = relationship("AvatarModel", foreign_keys=[follower_pk], back_populates="follow_follower")
+    avatar_following = relationship("AvatarModel", foreign_keys=[following_pk], back_populates="follow_following")

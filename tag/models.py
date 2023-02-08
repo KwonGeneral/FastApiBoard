@@ -14,6 +14,7 @@ class TagModel(Base):
 
     avatar_tag = relationship("AvatarTagModel", back_populates="tag")
     tag_similar_text = relationship("TagSimilarTextModel", back_populates="tag")
+    board_tag = relationship("BoardTagModel", back_populates="tag")
 
 class TagSimilarTextModel(Base):
     __tablename__ = "tag_similar_text"
@@ -22,4 +23,4 @@ class TagSimilarTextModel(Base):
     text = Column(String, index=True, nullable=False)
     version = Column(String, index=True, nullable=False)
 
-    tag = relationship("TagModel", back_populates="tag_similar_text")
+    tag = relationship("TagModel", foreign_keys=[tag_pk], back_populates="tag_similar_text")
