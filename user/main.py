@@ -1,3 +1,5 @@
+from typing import Type, List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -45,8 +47,7 @@ async def deleteUser(user_pk: int, db: Session = Depends(get_db)):
 
 @user_router.get("/loggedin/", response_model=ResponseData, description="특정 유저 로그인 기록 조회", summary="특정 유저 로그인 기록 조회")
 async def readLoggedIn(owner_pk: int, db: Session = Depends(get_db)):
-    print("owner_pk -> ", owner_pk)
-    user = crud.getLoggedIn(db=db, owner_pk=owner_pk)
+    user = crud.getLoggedInList(db=db, owner_pk=owner_pk)
     if user is None:
         return base_result.not_found()
     return base_result.success(user)
@@ -71,7 +72,7 @@ async def deleteLoggedIn(logged_in_pk: int, db: Session = Depends(get_db)):
 
 @user_router.get("/oauth/", response_model=ResponseData, description="특정 유저 Oauth 조회", summary="특정 유저 Oauth 조회")
 async def readOauth(owner_pk: int, db: Session = Depends(get_db)):
-    user = crud.getOauth(db=db, owner_pk=owner_pk)
+    user = crud.getOauthList(db=db, owner_pk=owner_pk)
     if user is None:
         return base_result.not_found()
     return base_result.success(user)
@@ -96,7 +97,7 @@ async def deleteOauth(oauth_pk: int, db: Session = Depends(get_db)):
 
 @user_router.get("/managed/", response_model=ResponseData, description="특정 유저 관리자 조회", summary="특정 유저 관리자 조회")
 async def readManagedUser(owner_pk: int, db: Session = Depends(get_db)):
-    user = crud.getManagedUser(db=db, owner_pk=owner_pk)
+    user = crud.getManagedUserList(db=db, owner_pk=owner_pk)
     if user is None:
         return base_result.not_found()
     return base_result.success(user)

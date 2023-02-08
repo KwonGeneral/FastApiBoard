@@ -48,12 +48,18 @@ def deleteUser(db: Session, user_pk: int) -> UserModel:
     db.commit()
     return user
 
-def getLoggedIn(db: Session, owner_pk: int) -> list[Type[LoggedInModel]]:
-    return db.query(LoggedInModel).filter(LoggedInModel.owner_pk == owner_pk)
+def getLoggedIn(db: Session, owner_pk: int) -> LoggedInModel:
+    return db.query(LoggedInModel).filter(LoggedInModel.owner_pk == owner_pk).first()
+
+def getLoggedInList(db: Session, owner_pk: int) -> list[Type[LoggedInModel]]:
+    return db.query(LoggedInModel).filter(LoggedInModel.owner_pk == owner_pk).all()
 
 def createLoggedIn(db: Session, logged_in: LoggedInSchema) -> LoggedInModel:
+    owner = getUser(db=db, user_pk=logged_in.owner_pk)
+    if owner is None:
+        return None
     db_logged_in = LoggedInModel(
-        owner_pk=logged_in.owner_pk,
+        owner_pk=owner.pk,
         version=logged_in.version,
         remote_addr=logged_in.remote_addr,
     )
@@ -76,8 +82,11 @@ def updateLoggedIn(db: Session, owner_pk: int, update_logged_in: LoggedInSchema)
     db.refresh(logged_in)
     return logged_in
 
-def getOauth(db: Session, owner_pk: int) -> list[Type[OauthModel]]:
-    return db.query(OauthModel).filter(OauthModel.owner_pk == owner_pk)
+def getOauth(db: Session, owner_pk: int) -> OauthModel:
+    return db.query(OauthModel).filter(OauthModel.owner_pk == owner_pk).first()
+
+def getOauthList(db: Session, owner_pk: int) -> list[Type[OauthModel]]:
+    return db.query(OauthModel).filter(OauthModel.owner_pk == owner_pk).all()
 
 def createOauth(db: Session, oauth: OauthSchema) -> OauthModel:
     db_oauth = OauthModel(
@@ -106,8 +115,11 @@ def updateOauth(db: Session, owner_pk: int, update_oauth: OauthSchema) -> OauthM
     db.refresh(oauth)
     return oauth
 
-def getManagedUser(db: Session, owner_pk: int) -> list[Type[ManagedUserModel]]:
-    return db.query(ManagedUserModel).filter(ManagedUserModel.owner_pk == owner_pk)
+def getManagedUserList(db: Session, owner_pk: int) -> list[Type[ManagedUserModel]]:
+    return db.query(ManagedUserModel).filter(ManagedUserModel.owner_pk == owner_pk).all()
+
+def getManagedUser(db: Session, owner_pk: int) -> ManagedUserModel:
+    return db.query(ManagedUserModel).filter(ManagedUserModel.owner_pk == owner_pk).first()
 
 def createManagedUser(db: Session, managed_user: ManagedUserSchema) -> ManagedUserModel:
     db_managed_user = ManagedUserModel(
@@ -133,7 +145,7 @@ def deleteManagedUser(db: Session, owner_pk: int) -> ManagedUserModel:
     return managed_user
 
 def getUserRole(db: Session, owner_pk: int) -> list[Type[UserRoleModel]]:
-    return db.query(UserRoleModel).filter(UserRoleModel.owner_pk == owner_pk)
+    return db.query(UserRoleModel).filter(UserRoleModel.owner_pk == owner_pk).all()
 
 def createUserRole(db: Session, user_role: UserRoleSchema) -> UserRoleModel:
     db_role = UserRoleModel(
@@ -159,7 +171,7 @@ def deleteUserRole(db: Session, owner_pk: int) -> UserRoleModel:
     return role
 
 def getRole(db: Session, role_pk: int) -> list[Type[RoleModel]]:
-    return db.query(RoleModel).filter(RoleModel.role_pk == role_pk)
+    return db.query(RoleModel).filter(RoleModel.role_pk == role_pk).all()
 
 def createRole(db: Session, role: RoleSchema) -> RoleModel:
     db_role = RoleModel(
@@ -186,7 +198,7 @@ def deleteRole(db: Session, role_pk: int) -> RoleModel:
     return role
 
 def getConfirmEmail(db: Session, owner_pk: int) -> list[Type[ConfirmEmailModel]]:
-    return db.query(ConfirmEmailModel).filter(ConfirmEmailModel.owner_pk == owner_pk)
+    return db.query(ConfirmEmailModel).filter(ConfirmEmailModel.owner_pk == owner_pk).all()
 
 def createConfirmEmail(db: Session, confirm_email: ConfirmEmailSchema) -> ConfirmEmailModel:
     db_confirm_email = ConfirmEmailModel(
