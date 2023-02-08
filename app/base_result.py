@@ -22,6 +22,13 @@ def exception() -> ResponseData:
         data=None
     )
 
+def duplicate() -> ResponseData:
+    return ResponseData(
+        code=ERROR_CODE,
+        message="이미 존재하는 데이터입니다.",
+        data=None
+    )
+
 def success(data: Any) -> ResponseData:
     return ResponseData(
         code=SUCCESS_CODE,

@@ -57,6 +57,52 @@ def updateBoard(db: Session, board_pk: int, update_board: BoardSchema) -> BoardM
     db.refresh(board)
     return board
 
+def getContent(db: Session, content_pk: int) -> ContentModel:
+    return db.query(ContentModel).filter(ContentModel.pk == content_pk).first()
+
+def getContentList(db: Session, skip: int = 0, limit: int = 100) -> list[Type[ContentModel]]:
+    return db.query(ContentModel).offset(skip).limit(limit).all()
+
+def createContent(db: Session, content: ContentSchema) -> ContentModel:
+    db_content = ContentModel(
+        board_pk=content.board_pk,
+        owner_pk=content.owner_pk,
+        version=content.version,
+        a_nick_name=content.a_nick_name,
+        anonymity=content.anonymity,
+        create_ip=content.create_ip,
+        last_editor_pk=content.last_editor_pk,
+        text=content.text,
+        text_type=content.text_type,
+        type=content.type,
+    )
+    db.add(db_content)
+    db.commit()
+    db.refresh(db_content)
+    return db_content
+
+def deleteContent(db: Session, content_pk: int) -> ContentModel:
+    content = getContent(db=db, content_pk=content_pk)
+    db.delete(content)
+    db.commit()
+    return content
+
+def updateContent(db: Session, content_pk: int, update_content: ContentSchema) -> ContentModel:
+    content = getContent(db=db, content_pk=content_pk)
+    content.board_pk = update_content.board_pk
+    content.owner_pk = update_content.owner_pk
+    content.version = update_content.version
+    content.a_nick_name = update_content.a_nick_name
+    content.anonymity = update_content.anonymity
+    content.create_ip = update_content.create_ip
+    content.last_editor_pk = update_content.last_editor_pk
+    content.text = update_content.text
+    content.text_type = update_content.text_type
+    content.type = update_content.type
+    db.commit()
+    db.refresh(content)
+    return content
+
 def getContentVote(db: Session, content_vote_pk: int) -> ContentVoteModel:
     return db.query(ContentVoteModel).filter(ContentVoteModel.pk == content_vote_pk).first()
 

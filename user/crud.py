@@ -36,7 +36,7 @@ def deleteUser(db: Session, user_pk: int) -> UserModel:
     db.commit()
     return user
 
-def getUserLoggedIn(db: Session, owner_pk: int) -> list[Type[LoggedInModel]]:
+def getLoggedIn(db: Session, owner_pk: int) -> list[Type[LoggedInModel]]:
     return db.query(LoggedInModel).filter(LoggedInModel.owner_pk == owner_pk)
 
 def createLoggedIn(db: Session, logged_in: LoggedInSchema) -> LoggedInModel:
@@ -51,20 +51,20 @@ def createLoggedIn(db: Session, logged_in: LoggedInSchema) -> LoggedInModel:
     return db_logged_in
 
 def deleteLoggedIn(db: Session, owner_pk: int) -> LoggedInModel:
-    logged_in = getUserLoggedIn(db=db, owner_pk=owner_pk)
+    logged_in = getLoggedIn(db=db, owner_pk=owner_pk)
     db.delete(logged_in)
     db.commit()
     return logged_in
 
 def updateLoggedIn(db: Session, owner_pk: int, update_logged_in: LoggedInSchema) -> LoggedInModel:
-    logged_in = getUserLoggedIn(db=db, owner_pk=owner_pk)
+    logged_in = getLoggedIn(db=db, owner_pk=owner_pk)
     logged_in.version = update_logged_in.version
     logged_in.remote_addr = update_logged_in.remote_addr
     db.commit()
     db.refresh(logged_in)
     return logged_in
 
-def getUserOauth(db: Session, owner_pk: int) -> list[Type[OauthModel]]:
+def getOauth(db: Session, owner_pk: int) -> list[Type[OauthModel]]:
     return db.query(OauthModel).filter(OauthModel.owner_pk == owner_pk)
 
 def createOauth(db: Session, oauth: OauthSchema) -> OauthModel:
@@ -80,13 +80,13 @@ def createOauth(db: Session, oauth: OauthSchema) -> OauthModel:
     return db_oauth
 
 def deleteOauth(db: Session, owner_pk: int) -> OauthModel:
-    oauth = getUserOauth(db=db, owner_pk=owner_pk)
+    oauth = getOauth(db=db, owner_pk=owner_pk)
     db.delete(oauth)
     db.commit()
     return oauth
 
 def updateOauth(db: Session, owner_pk: int, update_oauth: OauthSchema) -> OauthModel:
-    oauth = getUserOauth(db=db, owner_pk=owner_pk)
+    oauth = getOauth(db=db, owner_pk=owner_pk)
     oauth.version = update_oauth.version
     oauth.access_token = update_oauth.access_token
     oauth.provider = update_oauth.provider
@@ -123,19 +123,19 @@ def deleteManagedUser(db: Session, owner_pk: int) -> ManagedUserModel:
 def getUserRole(db: Session, owner_pk: int) -> list[Type[UserRoleModel]]:
     return db.query(UserRoleModel).filter(UserRoleModel.owner_pk == owner_pk)
 
-def createUserRole(db: Session, role: UserRoleSchema) -> UserRoleModel:
+def createUserRole(db: Session, user_role: UserRoleSchema) -> UserRoleModel:
     db_role = UserRoleModel(
-        owner_pk=role.owner_pk,
-        role_pk=role.role_pk,
+        owner_pk=user_role.owner_pk,
+        role_pk=user_role.role_pk,
     )
     db.add(db_role)
     db.commit()
     db.refresh(db_role)
     return db_role
 
-def updateUserRole(db: Session, owner_pk: int, update_role: UserRoleSchema) -> UserRoleModel:
+def updateUserRole(db: Session, owner_pk: int, update_user_role: UserRoleSchema) -> UserRoleModel:
     role = getUserRole(db=db, owner_pk=owner_pk)
-    role.role_pk = update_role.role_pk
+    role.role_pk = update_user_role.role_pk
     db.commit()
     db.refresh(role)
     return role
