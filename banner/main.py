@@ -44,19 +44,19 @@ async def deleteBanner(banner_pk: int, db: Session = Depends(get_db)):
         return base_result.not_found()
     return base_result.success(db_banner)
 
-@banner_router.get("/click", response_model=ResponseData, description="배너 클릭수 전체 조회", summary="배너 클릭수 전체 조회")
+@banner_router.get("/click/", response_model=ResponseData, description="배너 클릭수 전체 조회", summary="배너 클릭수 전체 조회")
 async def readBannerClickList(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     banner_clicks = crud.getBannerClickList(db, skip=skip, limit=limit)
     return base_result.success(banner_clicks)
 
-@banner_router.get("/click/{banner_pk}", response_model=ResponseData, description="배너 클릭수 조회", summary="배너 클릭수 조회")
+@banner_router.get("/click/{banner_click_pk}", response_model=ResponseData, description="배너 클릭수 조회", summary="배너 클릭수 조회")
 async def readBannerClick(banner_click_pk: int, db: Session = Depends(get_db)):
     banner_click = crud.getBannerClick(db, banner_click_pk=banner_click_pk)
     if banner_click is None:
         return base_result.not_found()
     return base_result.success(banner_click)
 
-@banner_router.post("/click", response_model=ResponseData, description="배너 클릭수 생성", summary="배너 클릭수 생성")
+@banner_router.post("/click/", response_model=ResponseData, description="배너 클릭수 생성", summary="배너 클릭수 생성")
 async def createBannerClick(banner_click: BannerClickSchema, db: Session = Depends(get_db)):
     db_banner_click = crud.createBannerClick(db, banner_click)
     return base_result.success(db_banner_click)

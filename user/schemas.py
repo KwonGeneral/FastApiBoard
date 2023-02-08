@@ -3,6 +3,9 @@ from typing import Union, Optional
 from pydantic import BaseModel
 from sqlalchemy import DateTime
 
+from avatar.schemas import AvatarSchema
+
+
 class UserSchema(BaseModel):
     # 유저 데이터
     version: str  # 버전

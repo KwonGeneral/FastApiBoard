@@ -46,7 +46,7 @@ async def deleteAvatar(avatar_pk: int, db: Session = Depends(get_db)):
         return base_result.not_found()
     return base_result.success(crud.deleteAvatar(db, avatar_pk))
 
-@avatar_router.get("/tag", response_model=ResponseData, description="아바타 태그 조회", summary="아바타 태그 조회")
+@avatar_router.get("/tag/", response_model=ResponseData, description="아바타 태그 조회", summary="아바타 태그 조회")
 async def readAvatarTagList(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_avatar_tag_list = crud.getAvatarTagList(db, skip=skip, limit=limit)
     return base_result.success(db_avatar_tag_list)
@@ -58,7 +58,7 @@ async def readAvatarTag(avatar_tag_pk: int, db: Session = Depends(get_db)):
         return base_result.not_found()
     return base_result.success(db_avatar_tag)
 
-@avatar_router.post("/tag", response_model=ResponseData, description="아바타 태그 생성", summary="아바타 태그 생성")
+@avatar_router.post("/tag/", response_model=ResponseData, description="아바타 태그 생성", summary="아바타 태그 생성")
 async def createAvatarTag(avatar_tag: AvatarTagSchema, db: Session = Depends(get_db)):
     return base_result.success(crud.createAvatarTag(db, avatar_tag))
 
@@ -76,7 +76,7 @@ async def deleteAvatarTag(avatar_tag_pk: int, db: Session = Depends(get_db)):
         return base_result.not_found()
     return base_result.success(crud.deleteAvatarTag(db, avatar_tag_pk))
 
-@avatar_router.get("/notification", response_model=ResponseData, description="아바타 알림 조회", summary="아바타 알림 조회")
+@avatar_router.get("/notification/", response_model=ResponseData, description="아바타 알림 조회", summary="아바타 알림 조회")
 async def readNotificationList(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     db_avatar_notification_list = crud.getNotificationList(db, skip=skip, limit=limit)
     return base_result.success(db_avatar_notification_list)
@@ -88,7 +88,7 @@ async def readNotification(notification_pk: int, db: Session = Depends(get_db)):
         return base_result.not_found()
     return base_result.success(db_avatar_notification)
 
-@avatar_router.post("/notification", response_model=ResponseData, description="아바타 알림 생성", summary="아바타 알림 생성")
+@avatar_router.post("/notification/", response_model=ResponseData, description="아바타 알림 생성", summary="아바타 알림 생성")
 async def createNotification(notification: NotificationSchema, db: Session = Depends(get_db)):
     return base_result.success(crud.createNotification(db, notification))
 

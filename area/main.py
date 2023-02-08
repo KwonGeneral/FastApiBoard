@@ -46,7 +46,7 @@ async def deleteAreaCityCode(area_city_code_pk: int, db: Session = Depends(get_d
         return base_result.not_found()
     return base_result.success(crud.deleteAreaCityCode(db=db, area_city_code_pk=area_city_code_pk))
 
-@area_router.get("/district", response_model=ResponseData, description="전체 구군 코드 조회", summary="전체 구군 코드 조회")
+@area_router.get("/district/", response_model=ResponseData, description="전체 구군 코드 조회", summary="전체 구군 코드 조회")
 async def readAreaDistrictCodeList(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     areas = crud.getAreaDistrictCodeList(db, skip=skip, limit=limit)
     return base_result.success(areas)
@@ -58,7 +58,7 @@ async def readAreaDistrictCode(area_district_code_pk: int, db: Session = Depends
         return base_result.not_found()
     return base_result.success(db_area)
 
-@area_router.post("/district", response_model=ResponseData, description="구군 코드 생성", summary="구군 코드 생성")
+@area_router.post("/district/", response_model=ResponseData, description="구군 코드 생성", summary="구군 코드 생성")
 async def createAreaDistrictCode(area_district_code: AreaDistrictCodeSchema, db: Session = Depends(get_db)):
     db_area = crud.getAreaDistrictCodeByName(db, name=area_district_code.name)
     if db_area:

@@ -40,7 +40,7 @@ async def deleteTag(tag_pk: int, db: Session = Depends(get_db)):
     db_tag = crud.deleteTag(db, tag_pk=tag_pk)
     return base_result.success(db_tag)
 
-@tag_router.get("/similar", response_model=ResponseData, description="유사 태그 조회", summary="유사 태그 조회")
+@tag_router.get("/similar/", response_model=ResponseData, description="유사 태그 조회", summary="유사 태그 조회")
 async def readSimilarTagList(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     tags = crud.getTagSimilarTextList(db, skip=skip, limit=limit)
     return base_result.success(tags)
@@ -52,7 +52,7 @@ async def readSimilarTag(tag_similar_text_pk: int, db: Session = Depends(get_db)
         return base_result.not_found()
     return base_result.success(db_tag)
 
-@tag_router.post("/similar", response_model=ResponseData, description="유사 태그 생성", summary="유사 태그 생성")
+@tag_router.post("/similar/", response_model=ResponseData, description="유사 태그 생성", summary="유사 태그 생성")
 async def createSimilarTag(tag: TagSimilarTextSchema, db: Session = Depends(get_db)):
     db_tag = crud.createTagSimilarText(db, tag)
     return base_result.success(db_tag)

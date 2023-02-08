@@ -16,6 +16,18 @@ def createUser(db: Session, user: UserSchema) -> UserModel:
     db_user = UserModel(
         username=user.username,
         password=user.password,
+        version=user.version,
+        account_expired=user.account_expired,
+        account_locked=user.account_locked,
+        create_ip=user.create_ip,
+        date_created=user.date_created,
+        date_withdraw=user.date_withdraw,
+        enabled=user.enabled,
+        last_password_changed=user.last_password_changed,
+        last_update_ip=user.last_update_ip,
+        last_updated=user.last_updated,
+        password_expired=user.password_expired,
+        withdraw=user.withdraw,
     )
     db.add(db_user)
     db.commit()

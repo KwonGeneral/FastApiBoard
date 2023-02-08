@@ -9,7 +9,6 @@ from app.database import Base
 class UserModel(Base):
     __tablename__ = "user"
     pk = Column(Integer, primary_key=True, index=True)
-    avatar_pk = Column(Integer, ForeignKey("avatar.pk"), nullable=False)
     version = Column(String, index=True, nullable=False)
     account_expired = Column(Boolean, default=False, index=True, nullable=False)
     account_locked = Column(Boolean, default=False, index=True, nullable=False)
