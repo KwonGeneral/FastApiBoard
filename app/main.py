@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 
+from activty.main import activity_router
 from area.main import area_router
 from avatar.main import avatar_router
 from banner.main import banner_router
@@ -21,6 +22,7 @@ app.include_router(file_router)
 app.include_router(follow_router)
 app.include_router(tag_router)
 app.include_router(user_router)
+app.include_router(activity_router)
 
 @app.get("/")
 async def root():

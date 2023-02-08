@@ -30,6 +30,7 @@ class BoardModel(Base):
     owner = relationship("AvatarModel", back_populates="board")
     content = relationship("ContentModel", back_populates="board")
     last_editor = relationship("AvatarModel", back_populates="board")
+    activity = relationship("ActivityModel", back_populates="activity")
 
 class ContentModel(Base):
     __tablename__ = "content"
@@ -41,7 +42,7 @@ class ContentModel(Base):
     anonymity = Column(Boolean, default=False, nullable=False)
     create_ip = Column(String, index=True, nullable=True)
     date_created = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
-    last_editor_id = Column(Integer, ForeignKey("avatar.pk"), nullable=True)
+    last_editor_pk = Column(Integer, ForeignKey("avatar.pk"), nullable=True)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
     selected = Column(Boolean, default=False, nullable=False)
     text = Column(String, index=True, nullable=False)
@@ -51,6 +52,7 @@ class ContentModel(Base):
 
     board = relationship("BoardModel", back_populates="content")
     owner = relationship("AvatarModel", back_populates="content")
+    activity = relationship("ActivityModel", back_populates="content")
 
 class ContentVoteModel(Base):
     __tablename__ = "content_vote"

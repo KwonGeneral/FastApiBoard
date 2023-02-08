@@ -21,6 +21,7 @@ class AvatarModel(Base):
     following = relationship("FollowModel", back_populates="following")
     sender = relationship("NotificationModel", back_populates="sender")
     receiver = relationship("NotificationModel", back_populates="receiver")
+    activity = relationship("ActivityModel", back_populates="avatar")
 
 class AvatarTagModel(Base):
     __tablename__ = "avatar_tag"
@@ -35,7 +36,7 @@ class NotificationModel(Base):
     __tablename__ = "notification"
     pk = Column(Integer, primary_key=True, index=True)
     sender_pk = Column(Integer, ForeignKey("avatar.pk"), nullable=False)
-    receiver_id = Column(Integer, ForeignKey("avatar.pk"), nullable=False)
+    receiver_pk = Column(Integer, ForeignKey("avatar.pk"), nullable=False)
     version = Column(String, index=True, nullable=False)
     date_created = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, index=True, nullable=False)
